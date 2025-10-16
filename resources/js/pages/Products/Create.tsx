@@ -7,6 +7,7 @@ import AppLayout from '@/layouts/app-layout';
 import { create, index, store } from '@/routes/products';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
+import axios from 'axios';
 import { CircleAlert } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -24,6 +25,7 @@ interface CreateFormOptions {
     name: string;
     price: number | string;
     description: string;
+    picture: string;
 }
 
 function CreateForm() {
@@ -32,6 +34,7 @@ function CreateForm() {
             name: '',
             price: '',
             description: '',
+            picture: '',
         });
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,8 +59,38 @@ function CreateForm() {
         console.log(data);
     };
 
+    const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
+        const files = event.target.files;
+        if (!files || files.length === 0) return;
+
+        const formData = new FormData();
+        formData.append('picture', files[0]); // Assuming single file input
+
+        try {
+            const response = await axios.post(
+                '/products/upload_picture',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                },
+            );
+            data.picture = response.data.url;
+            setData('picture', response.data.url);
+        } catch (error) {
+            // Handle error
+        }
+    };
+
     return (
-        <form className="space-y-4 p-4" onSubmit={onSubmit}>
+        <form
+            className="space-y-4 p-4"
+            onSubmit={onSubmit}
+            method="post"
+            encType="multipart/form-data"
+        >
             <div className="3">
                 <div className="">
                     {Object.keys(errors).length > 0 && (
@@ -76,6 +109,16 @@ function CreateForm() {
                     )}
                 </div>
             </div>
+            <div className="">
+                <Label htmlFor="picture">Picture</Label>
+                <Input
+                    id="picture"
+                    type="file"
+                    name="picture"
+                    onChange={handleUpload}
+                />
+            </div>
+            <input type="hidden" name="picture" value={data.picture} />
             <div>
                 <Label htmlFor="name">Product Name</Label>
                 <Input

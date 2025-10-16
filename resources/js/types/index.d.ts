@@ -43,6 +43,7 @@ export interface User {
 }
 
 interface Product {
+    picture: string;
     id: number;
     name: string;
     price: number;

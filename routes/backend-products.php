@@ -11,4 +11,5 @@ Route::group(['prefix' => 'products', 'as' => 'products.'], function () {
     Route::put('/{id}/update', [ProductController::class, 'update'])->name('update');
     Route::get('/{id}/details', [ProductController::class, 'show'])->name('show');
     Route::delete('/{id}/delete', [ProductController::class, 'delete'])->name('delete');
+    Route::post('/upload_picture', [ProductController::class, 'uploadPicture'])->name('upload_picture');
 })->middleware(['auth', 'verified'])->prefix('products')->name('products.');

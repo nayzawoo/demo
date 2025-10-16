@@ -54,6 +54,7 @@ function ProductsTable({
                     <TableRow>
                         <TableHead className="w-[100px]">ID</TableHead>
                         <TableHead>Name</TableHead>
+                        <TableHead>Picture</TableHead>
                         <TableHead>Price</TableHead>
                         <TableHead>Description</TableHead>
                         <TableHead className="text-center">Actions</TableHead>
@@ -67,6 +68,17 @@ function ProductsTable({
                                     {product.id}
                                 </TableCell>
                                 <TableCell>{product.name}</TableCell>
+                                <TableCell>
+                                    {product.picture ? (
+                                        <img
+                                            src={`${product.picture}`}
+                                            alt={product.name}
+                                            className="h-10 w-10 rounded-full object-cover"
+                                        />
+                                    ) : (
+                                        '-'
+                                    )}
+                                </TableCell>
                                 <TableCell>${product.price}</TableCell>
                                 <TableCell>
                                     {product.description
