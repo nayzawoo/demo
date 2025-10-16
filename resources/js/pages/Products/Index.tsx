@@ -1,6 +1,12 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationLink,
+} from '@/components/ui/pagination';
+import {
     Table,
     TableBody,
     TableCaption,
@@ -9,6 +15,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+
 import AppLayout from '@/layouts/app-layout';
 import { create, deleteMethod, edit, index, show } from '@/routes/products';
 import { Product, type BreadcrumbItem } from '@/types';
@@ -26,10 +33,19 @@ interface ProductsIndexPageProps {
     flash?: {
         message?: string;
     };
-    products?: Product[];
+    products: {
+        data: Product[];
+        links: { url: string | null; label: string; active: boolean }[];
+    };
 }
 
-function ProductsTable({ products }: { products: Product[] | undefined }) {
+function ProductsTable({
+    products,
+    links,
+}: {
+    products: Product[] | undefined;
+    links: { url: string | null; label: string; active: boolean }[] | undefined;
+}) {
     return (
         <div>
             <Table>
@@ -113,12 +129,40 @@ function ProductsTable({ products }: { products: Product[] | undefined }) {
                     )}
                 </TableBody>
             </Table>
+            {/* Laravel pagination links with shadcn/ui */}
+            {links && links.length > 0 && (
+                <Pagination className="mt-4">
+                    <PaginationContent>
+                        {links.map((link, idx) => (
+                            <PaginationItem key={idx}>
+                                {link.url ? (
+                                    <PaginationLink
+                                        href={link.url}
+                                        isActive={link.active}
+                                        dangerouslySetInnerHTML={{
+                                            __html: link.label,
+                                        }}
+                                    />
+                                ) : (
+                                    <PaginationLink
+                                        href="#"
+                                        dangerouslySetInnerHTML={{
+                                            __html: link.label,
+                                        }}
+                                    />
+                                )}
+                            </PaginationItem>
+                        ))}
+                    </PaginationContent>
+                </Pagination>
+            )}
         </div>
     );
 }
 
 export default function Products() {
-    const { flash, products } = usePage().props as ProductsIndexPageProps;
+    const { flash, products } = usePage()
+        .props as unknown as ProductsIndexPageProps;
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Products" />
@@ -147,11 +191,12 @@ export default function Products() {
                                 </span>
                             </Button>
                         </Link>
-
                         <br />
                     </div>
-
-                    <ProductsTable products={products} />
+                    <ProductsTable
+                        products={products?.data}
+                        links={products?.links}
+                    />
                 </div>
             </div>
         </AppLayout>

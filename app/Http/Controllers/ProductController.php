@@ -9,8 +9,11 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::latest()->get();
-        return inertia('Products/Index', compact('products'));
+        $products = Product::latest()->paginate(10);
+
+        return inertia('Products/Index', [
+            'products' => $products,
+        ]);
     }
 
     public function show($id, Request $request)
