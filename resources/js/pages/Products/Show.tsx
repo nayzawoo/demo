@@ -26,6 +26,7 @@ interface Product {
     name?: string;
     price?: number;
     description?: string;
+    picture?: string;
 }
 
 interface PageProps {
@@ -41,6 +42,24 @@ export default function Products() {
                 <Table>
                     <TableCaption>Product Details</TableCaption>
                     <TableBody>
+                        <TableRow>
+                            <TableCell className="font-medium">
+                                Product Picture
+                            </TableCell>
+                            <TableCell>
+                                {product?.picture ? (
+                                    <img
+                                        src={product.picture}
+                                        alt={product?.name ?? 'Product picture'}
+                                        className="h-24 w-24 rounded object-cover"
+                                    />
+                                ) : (
+                                    <span className="text-sm text-muted-foreground">
+                                        No picture
+                                    </span>
+                                )}
+                            </TableCell>
+                        </TableRow>
                         <TableRow>
                             <TableCell className="font-medium">
                                 Product ID
