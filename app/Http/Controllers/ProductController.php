@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -20,7 +19,7 @@ class ProductController extends Controller
     public function show($id, Request $request)
     {
         return inertia('Products/Show', [
-            'product' => Product::findOrFail($id)
+            'product' => Product::findOrFail($id),
         ]);
     }
 
@@ -56,6 +55,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
+
         return inertia('Products/Edit', compact('product'));
     }
 
@@ -91,8 +91,9 @@ class ProductController extends Controller
 
         if ($request->hasFile('picture')) {
             $path = $request->file('picture')->store('pictures', 'public');
+
             return response()->json([
-                'url' => asset('storage/' . $path)
+                'url' => asset('storage/'.$path),
             ]);
         }
 

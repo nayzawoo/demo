@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ProductApiController extends Controller
 {
@@ -19,7 +19,7 @@ class ProductApiController extends Controller
     {
         $product = Product::find($id);
 
-        if (!$product) {
+        if (! $product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
 
@@ -82,7 +82,7 @@ class ProductApiController extends Controller
 
         foreach ($cart as $productId => $quantity) {
             $product = Product::find($productId);
-            if (!$product) {
+            if (! $product) {
                 continue;
             }
             $price = floatval($product->price ?? 0);

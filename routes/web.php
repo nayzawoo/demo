@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -14,6 +13,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
-require __DIR__ . '/backend-products.php';
-require __DIR__ . '/backend-settings.php';
-require __DIR__ . '/auth.php';
+require __DIR__.'/backend-products.php';
+require __DIR__.'/backend-settings.php';
+require __DIR__.'/auth.php';

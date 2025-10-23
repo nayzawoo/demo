@@ -33,6 +33,7 @@ class MakeAdmin extends Command
         ]);
         $this->info('Command executed successfully!');
         $this->info('Admin user created with email admin@example.com "password"');
+
         return Command::SUCCESS;
     }
 }
